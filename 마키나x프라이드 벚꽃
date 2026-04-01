@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Memory Archive: 2033-04-Spring</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Serif+KR:wght@300;600&family=Noto+Sans+KR:wght@300;500&display=swap');
+
+        :root {
+            --machina-blue: #00F0FF;
+            --machina-blue-dim: rgba(0, 240, 255, 0.1);
+            --pride-gold: #D4AF37;
+            --pride-gold-dim: rgba(212, 175, 55, 0.1);
+            --blossom-pink: #FFB7C5;
+            --bg-color: #080808;
+            --text-main: #E0E0E0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cherry Blossom Background Animation */
+        .blossom-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .petal {
+            position: absolute;
+            background: var(--blossom-pink);
+            border-radius: 100% 0 100% 0;
+            opacity: 0.6;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translate(0, -10vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translate(20vw, 110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .archive-frame {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(15, 15, 20, 0.85);
+            border: 1px solid #333;
+            border-top: 3px solid var(--machina-blue);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            position: relative;
+            z-index: 1;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header-bar {
+            padding: 15px 20px;
+            background: linear-gradient(90deg, rgba(0,240,255,0.1), transparent);
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--machina-blue);
+        }
+        
+        .header-bar .date {
+            color: var(--text-main);
+            font-weight: bold;
+        }
+
+        /* Narrative Text */
+        .narrative {
+            padding: 40px 40px 20px 40px;
+            font-family: 'Noto Serif KR', serif;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: #ddd;
+            text-align: justify;
+        }
+
+        .narrative p {
+            margin-bottom: 20px;
+        }
+
+        .highlight-pride {
+            color: var(--pride-gold);
+            font-weight: 600;
+            text-shadow: 0 0 5px var(--pride-gold-dim);
+        }
+
+        .highlight-spring {
+            color: var(--blossom-pink);
+            font-weight: 600;
+        }
+
+        /* Dialogue Section */
+        .dialogue-section {
+            margin: 20px 0;
+            padding: 20px 40px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.02), transparent);
+        }
+
+        .speech-bubble {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-left: 3px solid;
+            background: rgba(0,0,0,0.3);
+            max-width: 80%;
+        }
+
+        .machina-speak {
+            border-color: var(--machina-blue);
+            margin-right: auto;
+            color: #fff;
+        }
+        
+        .pride-speak {
+            border-color: var(--pride-gold);
+            margin-left: auto;
+            text-align: right;
+            color: #fff;
+        }
+        
+        .name-tag {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            display: block;
+            margin-bottom: 5px;
+            opacity: 0.7;
+        }
+
+        /* Internal Monologue (Machina's Mind) */
+        .internal-log {
+            margin: 20px 40px;
+            padding: 15px;
+            border: 1px dashed var(--machina-blue);
+            background: rgba(0, 240, 255, 0.05);
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 0.9rem;
+            color: #bbb;
+            position: relative;
+        }
+
+        .internal-log::before {
+            content: "[SYSTEM: INTERNAL THOUGHT PROCESS]";
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: var(--bg-color);
+            padding: 0 5px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--machina-blue);
+        }
+
+        .warning-text {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        /* Status HUD */
+        .status-hud {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: #333;
+            margin-top: 30px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .hud-panel {
+            background: rgba(20,20,25,0.95);
+            padding: 15px;
+            font-size: 0.8rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .stat-bar {
+            height: 4px;
+            background: #333;
+            margin-top: 2px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        .fill-blue { background: var(--machina-blue); box-shadow: 0 0 5px var(--machina-blue); }
+        .fill-gold { background: var(--pride-gold); box-shadow: 0 0 5px var(--pride-gold); }
+        .fill-pink { background: var(--blossom-pink); box-shadow: 0 0 5px var(--blossom-pink); }
+
+        .footer-log {
+            background: #000;
+            padding: 10px 20px;
+            font-size: 0.75rem;
+            color: #666;
+            text-align: center;
+            border-top: 1px solid #222;
+        }
+
+        /* Animation for heart rate */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            5% { transform: scale(1.1); color: #ff6b6b; }
+            10% { transform: scale(1); }
+            15% { transform: scale(1.1); color: #ff6b6b; }
+            50% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+        .bpm-anim { animation: heartbeat 1s infinite; display: inline-block; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Background Effects -->
+    <div class="blossom-container" id="blossom-container">
+        <!-- Scripts will populate petals -->
+    </div>
+
+    <div class="archive-frame">
+        <!-- System Header -->
+        <div class="header-bar">
+            <span>FEARLESS ARCHIVE // LOG_ID_203304_S</span>
+            <span class="date">2033. 04. XX. 14:00 PM</span>
+        </div>
+
+        <!-- Main Narrative -->
+        <div class="narrative">
+            <p>세상은 때때로 잔인하리만치 아름답다.</p>
+            
+            <p>하늘이 무너져 내릴 듯 쏟아지는 연분홍빛 꽃비. 그것은 단순히 꽃잎이 떨어지는 현상이 아니었다. 차갑게 얼어붙었던 겨울의 끝자락을 태우고, 기어코 봄이라는 계절을 선포하는 자연의 압도적인 선언이었다. 그 무수한 꽃잎의 소용돌이 한가운데, 나의 세계가 서 있었다.</p>
+
+            <p><span class="highlight-pride">진현우. 프라이드. 나의 여왕.</span></p>
+
+            <p>그는 벚나무 아래, 마치 세상의 중심이 그곳이라는 듯 오만하고도 고요하게 서 있었다. 바람이 불 때마다 그의 금발이 흩날렸고, 그 사이로 떨어진 꽃잎들이 그의 어깨와 머리카락 위에 사뿐히 내려앉았다. 검은 제복 위로 내려앉은 연분홍 꽃잎은 묘한 대조를 이루며, 그를 더욱 비현실적인 존재로 만들었다.</p>
+
+            <p>그 순간, 시간이 멈춘 듯했다.</p>
+
+            <p>나의 뇌리를 스치는 것은 단순한 시각적 정보가 아니었다. 그것은 내 영혼 깊숙한 곳에 각인된, 그를 향한 원초적인 갈망과 숭배였다. 나는 그를 보며 생각했다. 아, 저 사람은 <span class="highlight-spring">봄</span>이구나. 나의 춥고 시린 겨울을 끝내고, 기어코 내 인생에 꽃을 피우게 한 유일한 봄.</p>
+
+            <p>그의 눈동자가 나를 향했다. 칠흑같이 깊은 그 눈동자 속에, 오직 나만이 담겨 있었다. 그가 입꼬리를 살짝 올리며 미소 지었다. 그 미소는 봄바람보다 따뜻했고, 벚꽃보다 화사했다. 그 순간, 나는 깨달았다. 내가 살아온 모든 순간, 내가 겪은 모든 고통과 방황은 결국 이 순간을 마주하기 위한 서막에 불과했음을.</p>
+
+            <p>그는 나의 구원이자, 나의 파멸이었다. 그가 웃으면 세상이 환해졌고, 그가 찡그리면 내 세상은 무너졌다. 나는 그 절대적인 권력 앞에 기꺼이 무릎 꿇은 신도였다. 아니, 그보다 더 비참하고도 황홀한, 사랑에 미친 짐승이었다.</p>
+
+            <p>흩날리는 벚꽃잎 하나가 그의 속눈썹에 걸렸다. 그는 가볍게 눈을 깜빡였고, 꽃잎은 나비처럼 날아올라 내 가슴에 박혔다. 심장이 쿵, 하고 내려앉았다. 그것은 통증이 아니었다. 벅차오르는 사랑의 무게였다.</p>
+
+            <p>나는 그에게 다가갔다. 한 걸음, 한 걸음. 나의 발걸음은 조심스러웠다. 혹여나 이 완벽한 그림을 망칠까 봐, 혹여나 이 꿈같은 순간이 깨질까 봐. 하지만 그는 나를 기다리고 있었다. 언제나처럼, 그 자리에서, 나를 내려다보며.</p>
+        </div>
+
+        <!-- Dialogue Interaction -->
+        <div class="dialogue-section">
+            <div class="speech-bubble machina-speak">
+                <span class="name-tag">MACHINA</span>
+                "오래 기다렸어?"
+            </div>
+            
+            <div class="speech-bubble pride-speak">
+                <span class="name-tag">PRIDE</span>
+                "아니. 네가 오는 걸 보고 있었어."
+            </div>
+
+            <div class="narrative" style="padding: 0; margin-bottom: 20px;">
+                <p>그의 목소리는 낮고 부드러웠다. 마치 벚꽃잎이 귓가에 속삭이는 것처럼. 나는 손을 뻗어 그의 머리카락에 붙은 꽃잎을 떼어주었다. 손끝에 닿는 그의 온기가, 나를 살아있게 했다.</p>
+            </div>
+
+            <div class="speech-bubble machina-speak">
+                <span class="name-tag">MACHINA</span>
+                "현우야."
+            </div>
+
+            <div class="speech-bubble pride-speak">
+                <span class="name-tag">PRIDE</span>
+                "응."
+            </div>
+
+            <div class="speech-bubble machina-speak">
+                <span class="name-tag">MACHINA</span>
+                "사랑해."
+            </div>
+        </div>
+
+        <div class="narrative">
+            <p>나의 고백은 바람에 실려 흩어지지 않았다. 그의 귓가에, 그의 마음에, 그리고 이 벚꽃 흩날리는 세상 속에 영원히 각인되었다.</p>
+            <p>그는 대답 대신, 나의 손을 잡았다. 그리고 내 손등에 입을 맞췄다. 따뜻하고 부드러운 입술의 감촉. 그 순간, 나는 확신했다. 이 세상이 멸망하고, 모든 것이 사라진다 해도, 내 곁에 그가 있는 한 나는 영원히 봄을 살 것이라고.</p>
+            <p>그는 나의 봄이었다. 나의 시작이자, 나의 끝. 그리고 나의 영원한 여왕.</p>
+            <p>벚꽃이 눈처럼 쏟아지는 그날, 나는 다시 한번 그에게 맹세했다. 내 모든 것을 바쳐, 당신의 그 미소를 지키겠노라고. 당신이 걷는 그 모든 길에, 내가 꽃잎이 되어 깔리겠노라고.</p>
+        </div>
+
+        <!-- Internal Thoughts (Machina) -->
+        <div class="internal-log">
+            <strong>[NEURAL SYNC // UNFILTERED]</strong><br><br>
+            아, 진짜 미치겠네. 저렇게 예쁘게 웃으면 반칙이지. 심장이 남아나질 않잖아.<br>
+            당장이라도 끌어안고 키스하고 싶다. 아니, 그냥 여기서 눕혀버릴까?<br>
+            안 돼, 참자. 현우가 싫어할 거야. <br>
+            하지만… 너무 예쁘잖아.<br>
+            <span class="warning-text">젠장, 사랑해. 진짜 사랑해, 현우야.</span>
+        </div>
+
+        <!-- Status Dashboard -->
+        <div class="status-hud">
+            <div class="hud-panel">
+                <div class="stat-row">
+                    <span>PRIDE [NPC]</span>
+                    <span style="color:var(--pride-gold)">STABLE</span>
+                </div>
+                <div class="stat-row" style="font-size:0.7rem; color:#888;">Guiding Need: 0%</div>
+                <div class="stat-bar"><div class="stat-fill fill-gold" style="width: 0%"></div></div>
+                <div style="margin-top:8px;">HAPPINESS: 100%</div>
+                <div class="stat-bar"><div class="stat-fill fill-gold" style="width: 100%"></div></div>
+                <div style="margin-top:8px;">LOVE: 100%</div>
+                <div class="stat-bar"><div class="stat-fill fill-gold" style="width: 100%"></div></div>
+            </div>
+
+            <div class="hud-panel">
+                <div class="stat-row">
+                    <span>MACHINA [PC]</span>
+                    <span style="color:var(--machina-blue)">OVERDRIVE</span>
+                </div>
+                <div class="stat-row" style="font-size:0.7rem; color:#888;">Guiding Need: 0%</div>
+                <div class="stat-bar"><div class="stat-fill fill-blue" style="width: 0%"></div></div>
+                <div style="margin-top:8px;">HEART RATE: <span class="bpm-anim">200 BPM</span></div>
+                <div class="stat-bar"><div class="stat-fill fill-blue" style="width: 100%; background: #ff6b6b; box-shadow:0 0 5px red;"></div></div>
+                <div style="margin-top:8px;">LOVE: <span style="color:var(--blossom-pink)">MAX (1000%)</span></div>
+                <div class="stat-bar"><div class="stat-fill fill-pink" style="width: 100%"></div></div>
+            </div>
+        </div>
+        
+        <!-- Footer Info -->
+        <div class="footer-log">
+            HYUNA'S DIARY: [DATA NOT FOUND] - No entry for today.<br>
+            RELATIONSHIP: SPOUSE (Since 2025) | SUMMARY: The Eternal Vow.
+        </div>
+    </div>
+
+    <script>
+        // JS to generate random petals
+        const container = document.getElementById('blossom-container');
+        const petalCount = 30;
+
+        for (let i = 0; i < petalCount; i++) {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            
+            // Randomize size, position, and delay
+            const size = Math.random() * 10 + 5;
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size}px`;
+            petal.style.left = `${Math.random() * 100}vw`;
+            petal.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            petal.style.animationDelay = `${Math.random() * 5}s`;
+            
+            container.appendChild(petal);
+        }
+    </script>
+</body>
+</html>
